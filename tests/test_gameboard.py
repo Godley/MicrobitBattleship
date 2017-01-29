@@ -23,6 +23,15 @@ def test_add_ship(board):
     board.add_ship(x=1, y=3)
     assert board.ships[0].position() == (1, 3)
 
+def test_invalid_pos(board):
+    length = 2
+    assert not board.position_is_valid(length, x=4)
+
 def test_add_ship_invalid_pos(board):
     with pytest.raises(InvalidPositionError):
         board.add_ship(x=4)
+
+def test_move_ship_invalid_pos(board):
+    board.add_ship()
+    with pytest.raises(InvalidPositionError):
+        board.move_ship(0, x=5)
