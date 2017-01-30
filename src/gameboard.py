@@ -28,7 +28,7 @@ class Gameboard(object):
         self.ships.append(ship)
         self.move_ship(len(self.ships) - 1, x=x, y=y)
 
-    def move_ship(self, index, x=0, y=0):
+    def move_ship(self, index=-1, x=0, y=0):
         ship = self.ships[index]
         valid_pos = self.position_is_valid(ship.length, x=x, y=y)
         if valid_pos:
@@ -37,13 +37,18 @@ class Gameboard(object):
         else:
             raise InvalidPositionError()
 
-    def rotate_ship(self, index):
+    def rotate_ship(self, index=-1):
         ship = self.ships[index]
         ship.rotate()
 
     def hit(self, x=0, y=0):
+        hit = False
+        sunk = False
         for ship in self.ships:
-            ship.hit(x, y)
+            hit, sunk = ship.hit(x, y)
+            if hit:
+                break
+        return hit, sunk
 
     def update(self):
         for ship in self.ships:

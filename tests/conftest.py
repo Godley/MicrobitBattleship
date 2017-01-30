@@ -1,6 +1,7 @@
 import pytest
 from src.ship import Ship
 from src.gameboard import Gameboard
+from src.planner import Planner
 
 @pytest.fixture(scope='function')
 def small_ship():
@@ -19,3 +20,7 @@ def board():
 @pytest.fixture()
 def empty_board():
     return [[0 for j in range(5)] for i in range(5)]
+
+@pytest.fixture()
+def planner():
+    return Planner()

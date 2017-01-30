@@ -24,11 +24,13 @@ class Ship(object):
         return self.x, self.y
 
     def hit(self, x=0, y=0):
-        if self.is_hit(x, y):
+        is_hit = self.is_hit(x, y)
+        if is_hit:
             idx = x - self.x
             self.hits[idx] = 2
         if (sum(self.hits) / 2) >= self.length:
             self.sunk = True
+        return is_hit, self.sunk
 
     def rotate(self):
         self.horizontal = False

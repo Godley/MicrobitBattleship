@@ -45,8 +45,8 @@ def test_sunk(long_ship):
     assert long_ship.sunk
 
 def test_draw(long_ship):
-    assert long_ship.draw() == ((0, 0), [1, 1, 1, 1], False)
+    assert long_ship.draw() == (0, 0, [1, 1, 1, 1], True)
 
 def test_draw_after_hit(long_ship):
     long_ship.hit(x=0, y=0)
-    assert long_ship.draw() == ((0,0), [2,1,1,1], False)
+    assert long_ship.draw() == (0,0, [2,1,1,1], True)
