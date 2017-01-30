@@ -36,23 +36,36 @@ def test_move_ship_invalid_pos(board):
     with pytest.raises(InvalidPositionError):
         board.move_ship(0, x=5)
 
-def test_draw(board):
+def test_draw(board, empty_board):
+    board.update()
     result = board.draw()
-    assert result == [[0 for j in range(5)] for i in range(5)]
+    assert result == empty_board
 
-def test_draw_with_ship(board):
+def test_draw_with_ship(board, empty_board):
     board.add_ship()
+    board.update()
     result = board.draw()
-    exp = [[0 for j in range(5)] for i in range(5)]
+    exp = empty_board
     exp[0][0] = 1
     exp[0][1] = 1
     assert result == exp
 
-def test_draw_with_hit_ship(board):
+def test_draw_with_hit_ship(board, empty_board):
     board.add_ship()
     board.hit(x=0, y=0)
-    result = board.draw()
-    exp = [[0 for j in range(5)] for i in range(5)]
+    board.update()
+    exp = empty_board
     exp[0][0] = 2
     exp[0][1] = 1
+    result = board.draw()
+    assert result == exp
+
+def test_draw_with_rotated_ship(board, empty_board):
+    board.add_ship()
+    board.rotate_ship(0)
+    exp = empty_board
+    exp[0][0] = 1
+    exp[1][0] = 1
+    board.update()
+    result = board.draw()
     assert result == exp

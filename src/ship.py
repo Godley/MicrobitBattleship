@@ -5,15 +5,20 @@ class Ship(object):
         self.length = length
         self.sunk = False
         self.hits = [1 for i in range(self.length)]
+        self.horizontal = True
 
     def move(self, x=0, y=0):
         self.x += x
         self.y += y
 
     def is_hit(self, x=0, y=0):
-        width_true = x >= self.x and x <= self.x + self.length - 1
-        height_true = y == self.y
-        return width_true and height_true
+        in_width = x == self.x
+        in_height = y == self.y
+        if self.horizontal:
+            in_width = x >= self.x and x <= self.x + self.length - 1
+        else:
+            in_height = y >= self.y and y <= self.y + self.length - 1
+        return in_width and in_height
 
     def position(self):
         return self.x, self.y
@@ -25,5 +30,9 @@ class Ship(object):
         if (sum(self.hits) / 2) >= self.length:
             self.sunk = True
 
+    def rotate(self):
+        self.horizontal = False
+
     def draw(self):
-        return self.position(), self.hits
+        x, y = self.position()
+        return x, y, self.hits, self.horizontal

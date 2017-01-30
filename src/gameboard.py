@@ -1,14 +1,16 @@
 from src.ship import Ship
 from src.exceptions import InvalidPositionError
+import copy
 
 
 class Gameboard(object):
-    ships = []
 
     def __init__(self, width=5, height=5):
+        self.ships = []
         self.ship_gen = self.get_ships()
         self.width = width
         self.height = height
+        self.board = [[0 for i in range(self.width)] for j in range(self.height)]
 
     def get_ships(self):
         length = 2
@@ -35,15 +37,36 @@ class Gameboard(object):
         else:
             raise InvalidPositionError()
 
+    def rotate_ship(self, index):
+        ship = self.ships[index]
+        ship.rotate()
+
     def hit(self, x=0, y=0):
         for ship in self.ships:
             ship.hit(x, y)
 
+    def update(self):
+        for ship in self.ships:
+            x, y, hits, horizontal = ship.draw()
+            if horizontal:
+                row = copy.deepcopy(self.board[y])
+                prefix = row[:x]
+                postfix = row[x+ship.length:]
+                new_row = []
+                new_row.extend(prefix)
+                new_row.extend(hits)
+                new_row.extend(postfix)
+                self.board[x] = new_row
+            else:
+                column = [elem[x] for elem in self.board]
+                prefix = column[:y]
+                postfix = column[y+ship.length:]
+                new_col = []
+                new_col.extend(prefix)
+                new_col.extend(hits)
+                new_col.extend(postfix)
+                for i in range(len(self.board)):
+                    self.board[i][x] = new_col[i]
+
     def draw(self):
-        board = []
-        for i in range(self.height):
-            row = []
-            for i in range(self.width):
-                row.append(0)
-            board.append(row)
-        return board
+        return self.board
