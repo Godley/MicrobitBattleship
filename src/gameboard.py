@@ -43,12 +43,15 @@ class Gameboard(object):
 
     def hit(self, x=0, y=0):
         hit = False
-        sunk = False
+        ships_sunk = []
         for ship in self.ships:
             hit, sunk = ship.hit(x, y)
+            if sunk:
+                ships_sunk.append(sunk)
             if hit:
                 break
-        return hit, sunk
+        lost = len(ships_sunk) == 3
+        return hit, lost
 
     def update(self):
         for ship in self.ships:
