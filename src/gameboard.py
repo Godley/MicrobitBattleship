@@ -34,3 +34,16 @@ class Gameboard(object):
 
         else:
             raise InvalidPositionError()
+
+    def hit(self, x=0, y=0):
+        for ship in self.ships:
+            ship.hit(x, y)
+
+    def draw(self):
+        board = []
+        for i in range(self.height):
+            row = []
+            for i in range(self.width):
+                row.append(0)
+            board.append(row)
+        return board
